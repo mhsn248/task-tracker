@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+افزودن کار
+{% endblock %}
+
+{% block content %}
+
+<h1>افزودن کار جدید</h1>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">
+        ذخیره
+    </button>
+
+</form>
+
+<p>
+    <a href="{% url 'task_list' %}">
+        بازگشت به لیست
+    </a>
+</p>
+
+{% endblock %}

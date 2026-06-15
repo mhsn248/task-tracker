@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 
 class Task(models.Model):
@@ -22,8 +22,13 @@ class Task(models.Model):
         auto_now_add=True,
     )
 
+    display_order = models.PositiveIntegerField(
+        default=0,
+    )
+
     class Meta:
-        ordering = ['title']
+        ordering = ['display_order', 'title']
+
         constraints = [
             models.UniqueConstraint(
                 fields=['student', 'title'],
@@ -31,5 +36,30 @@ class Task(models.Model):
             )
         ]
 
+    def save(self, *args, **kwargs):
+
+        # فقط هنگام ایجاد Task جدید
+        if self.pk is None:
+
+            # اگر ترتیب مشخص نشده باشد
+            if self.display_order <= 0:
+
+                last_task = Task.objects.filter(
+                    student=self.student,
+                    is_active=True,
+                ).order_by('-display_order').first()
+
+                if last_task:
+                    self.display_order = (
+                        last_task.display_order + 1
+                    )
+                else:
+                    self.display_order = 1
+
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f'{self.student.username} - {self.title}'
+        return (
+            f'{self.student.username} - '
+            f'{self.display_order}. {self.title}'
+        )
