@@ -63,3 +63,44 @@ class Task(models.Model):
             f'{self.student.username} - '
             f'{self.display_order}. {self.title}'
         )
+
+
+class DailyTaskStatus(models.Model):
+
+    task = models.ForeignKey(
+        Task,
+        on_delete=models.CASCADE,
+        related_name='daily_statuses',
+    )
+
+    date = models.DateField()
+
+    is_completed = models.BooleanField(
+        default=False,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    class Meta:
+
+        ordering = ['-date', 'task__display_order']
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=['task', 'date'],
+                name='unique_task_per_day',
+            )
+        ]
+
+    def __str__(self):
+
+        status = '✓' if self.is_completed else '✗'
+
+        return (
+            f'{self.task.student.username} - '
+            f'{self.task.title} - '
+            f'{self.date} - '
+            f'{status}'
+        )
