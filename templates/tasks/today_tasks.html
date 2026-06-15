@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load task_extras %}
+
+{% block title %}
+کارهای امروز
+{% endblock %}
+
+{% block content %}
+
+<h1>کارهای امروز</h1>
+
+<p>
+    تاریخ: {{ today }}
+</p>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    <ul>
+
+        {% for task in tasks %}
+
+            <li>
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        name="task_{{ task.id }}"
+                        {% if statuses|get_item:task.id %}
+                            checked
+                        {% endif %}
+                    >
+
+                    {{ task.title }}
+
+                </label>
+
+            </li>
+
+        {% empty %}
+
+            <li>
+                هنوز کاری تعریف نکرده‌اید.
+            </li>
+
+        {% endfor %}
+
+    </ul>
+
+    {% if tasks %}
+
+        <button type="submit">
+            ذخیره
+        </button>
+
+    {% endif %}
+
+</form>
+
+{% endblock %}

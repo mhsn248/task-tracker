@@ -9,4 +9,10 @@ urlpatterns = [
         views.task_create,
         name='task_create',
     ),
+
+    path(
+        'today/',
+        views.today_tasks,
+        name='today_tasks',
+    ),
 ]
