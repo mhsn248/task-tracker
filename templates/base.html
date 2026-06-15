@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Task Tracker{% endblock %}</title>
+</head>
+<body>
+
+    {% if user.is_authenticated %}
+        <p>
+            خوش آمدی {{ user.username }}
+
+            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">خروج</button>
+            </form>
+        </p>
+    {% endif %}
+
+    <hr>
+
+    {% block content %}
+    {% endblock %}
+
+</body>
+</html>
