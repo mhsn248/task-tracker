@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load task_extras %}
+{% load jalali %}
 
 {% block title %}
 {{ student.username }}
@@ -14,19 +15,32 @@
 
 </h1>
 
-<form method="get">
+<p class="text-muted">
+
+    تاریخ انتخاب‌شده:
+
+    {{ selected_date|to_jalali }}
+
+</p>
+
+<form method="get" id="date-form">
+
+    <label>
+        تاریخ:
+    </label>
 
     <input
-        type="date"
-        name="date"
-        value="{{ selected_date|date:'Y-m-d' }}"
+        type="text"
+        id="jalali-date"
+        class="form-control"
     >
 
-    <button type="submit">
-
-        نمایش
-
-    </button>
+    <input
+        type="hidden"
+        name="date"
+        id="gregorian-date"
+        value="{{ selected_date|date:'Y-m-d' }}"
+    >
 
 </form>
 
@@ -73,5 +87,76 @@
     </a>
 
 </p>
+
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css"
+>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
+
+<script>
+
+$(document).ready(function() {
+
+    $("#jalali-date").pDatepicker({
+
+        format: 'YYYY/MM/DD',
+
+        observer: true,
+
+        autoClose: true,
+
+        initialValue: false,
+
+        onSelect: function(unix) {
+
+            const pd = new persianDate(unix);
+
+            const gregorian = pd.toCalendar(
+                'gregorian'
+            );
+
+            const year = gregorian.year();
+
+            const month = String(
+                gregorian.month()
+            ).padStart(
+                2,
+                '0'
+            );
+
+            const day = String(
+                gregorian.date()
+            ).padStart(
+                2,
+                '0'
+            );
+
+            document.getElementById(
+                'gregorian-date'
+            ).value =
+                `${year}-${month}-${day}`;
+
+            document.getElementById(
+                'date-form'
+            ).submit();
+        }
+    });
+
+    const initialJalaliDate =
+        "{{ selected_date|to_jalali }}";
+
+    $("#jalali-date").val(
+        initialJalaliDate
+    );
+
+});
+
+</script>
 
 {% endblock %}
