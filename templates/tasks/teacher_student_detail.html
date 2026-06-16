@@ -104,10 +104,10 @@
 
 <a
     href="{% url 'teacher_students' %}"
-    class="btn btn-outline-secondary mt-3"
+    class="back-link"
 >
 
-    بازگشت
+    بازگشت به شاگردها
 
 </a>
 
@@ -309,6 +309,67 @@ $(document).ready(function() {
     outline: none;
 
     border-color: #0f766e;
+
+}
+
+.back-link {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    width: 100%;
+
+    margin-top: 1.5rem;
+
+    padding: 0.8rem 1rem;
+
+    background: white;
+
+    border: 1px solid #e9ecef;
+
+    border-radius: 16px;
+
+    color: #495057;
+
+    text-decoration: none;
+
+    font-size: 0.95rem;
+
+    font-weight: 600;
+
+    box-shadow:
+        0 2px 8px rgba(
+            0,
+            0,
+            0,
+            0.04
+        );
+
+    transition:
+        background-color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+
+}
+
+.back-link:hover {
+
+    background: #f8f9fa;
+
+    color: #212529;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 12px rgba(
+            0,
+            0,
+            0,
+            0.06
+        );
 
 }
 

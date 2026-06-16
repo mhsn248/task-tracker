@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-ورود
+ثبت‌نام
 {% endblock %}
 
 {% block content %}
@@ -10,13 +10,13 @@
 
     <h1 class="login-title">
 
-        خوش آمدید 👋
+        ایجاد حساب کاربری ✨
 
     </h1>
 
     <div class="login-subtitle">
 
-        برای ادامه وارد حساب کاربری خود شوید.
+        فقط یک نام کاربری و رمز عبور انتخاب کنید.
 
     </div>
 
@@ -49,15 +49,7 @@
 
             </label>
 
-            <input
-                type="text"
-                name="{{ form.username.html_name }}"
-                id="{{ form.username.id_for_label }}"
-                value="{{ form.username.value|default:'' }}"
-                class="form-control"
-                autocomplete="username"
-                autofocus
-            >
+            {{ form.username }}
 
             {% if form.username.errors %}
 
@@ -75,30 +67,29 @@
 
             <label
                 class="form-label fw-medium"
-                for="{{ form.password.id_for_label }}"
+                for="{{ form.password1.id_for_label }}"
             >
 
                 رمز عبور
 
             </label>
 
-            <input
-                type="password"
-                name="{{ form.password.html_name }}"
-                id="{{ form.password.id_for_label }}"
-                class="form-control"
-                autocomplete="current-password"
+            {{ form.password1 }}
+
+        </div>
+
+        <div class="mb-4">
+
+            <label
+                class="form-label fw-medium"
+                for="{{ form.password2.id_for_label }}"
             >
 
-            {% if form.password.errors %}
+                تکرار رمز عبور
 
-                <div class="text-danger mt-2 small">
+            </label>
 
-                    {{ form.password.errors }}
-
-                </div>
-
-            {% endif %}
+            {{ form.password2 }}
 
         </div>
 
@@ -107,7 +98,7 @@
             type="submit"
         >
 
-            ورود
+            ثبت‌نام
 
         </button>
 
@@ -115,18 +106,18 @@
 
     <div class="text-center mt-4">
 
-    حساب کاربری ندارید؟
+        حساب کاربری دارید؟
 
-    <a
-        href="{% url 'register' %}"
-        class="register-link"
-    >
+        <a
+            href="{% url 'login' %}"
+            class="register-link"
+        >
 
-        ثبت‌نام کنید
+            وارد شوید
 
-    </a>
+        </a>
 
-</div>
+    </div>
 
 </div>
 
@@ -135,14 +126,6 @@
 .login-header {
 
     margin-bottom: 1.75rem;
-
-}
-
-.login-icon {
-
-    font-size: 2.2rem;
-
-    margin-bottom: 0.75rem;
 
 }
 

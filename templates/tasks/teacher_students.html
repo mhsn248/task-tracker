@@ -6,32 +6,188 @@
 
 {% block content %}
 
-<h1>لیست شاگردها</h1>
+<div class="page-header">
 
-<ul>
+    <div class="page-icon">
+
+        👨‍🏫
+
+    </div>
+
+    <h1 class="page-title">
+
+        شاگردها
+
+    </h1>
+
+    <div class="page-subtitle">
+
+        وضعیت انجام کارهای شاگردان را مشاهده کنید.
+
+    </div>
+
+</div>
+
+<div class="students-list">
 
     {% for student in students %}
 
-        <li>
+        <a
+            href="{% url 'teacher_student_detail' student.id %}"
+            class="student-card"
+        >
 
-            <a href="{% url 'teacher_student_detail' student.id %}">
+            <div>
 
-                {{ student.username }}
+                <div class="student-name">
 
-            </a>
+                    {{ student.username }}
 
-        </li>
+                </div>
+
+                <div class="student-hint">
+
+                    مشاهده وضعیت روزانه
+
+                </div>
+
+            </div>
+
+            <div class="student-arrow">
+
+                ←
+
+            </div>
+
+        </a>
 
     {% empty %}
 
-        <li>
+        <div class="alert alert-info">
 
-            شاگردی وجود ندارد.
+            هنوز شاگردی ثبت نشده است.
 
-        </li>
+        </div>
 
     {% endfor %}
 
-</ul>
+</div>
+
+<style>
+
+.page-header {
+
+    margin-bottom: 1.75rem;
+
+}
+
+.page-icon {
+
+    font-size: 2rem;
+
+    margin-bottom: 0.75rem;
+
+}
+
+.page-title {
+
+    font-size: 1.6rem;
+
+    font-weight: 700;
+
+    margin-bottom: 0.4rem;
+
+}
+
+.page-subtitle {
+
+    color: #6b7280;
+
+    font-size: 0.95rem;
+
+}
+
+.students-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 0.9rem;
+
+}
+
+.student-card {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    background: white;
+
+    border: 1px solid #e9ecef;
+
+    border-radius: 18px;
+
+    padding: 1rem 1.2rem;
+
+    text-decoration: none;
+
+    color: inherit;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        border-color 0.15s ease;
+
+}
+
+.student-card:hover {
+
+    transform: translateY(-2px);
+
+    border-color: #d1d5db;
+
+    box-shadow:
+        0 4px 12px rgba(
+            0,
+            0,
+            0,
+            0.05
+        );
+
+}
+
+.student-name {
+
+    font-size: 1rem;
+
+    font-weight: 600;
+
+    color: #212529;
+
+    margin-bottom: 0.25rem;
+
+}
+
+.student-hint {
+
+    font-size: 0.85rem;
+
+    color: #6b7280;
+
+}
+
+.student-arrow {
+
+    font-size: 1.2rem;
+
+    color: #9ca3af;
+
+}
+
+</style>
 
 {% endblock %}

@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .forms import TaskForm
+from .forms import TaskForm, RegisterForm
 from datetime import date
 from .models import DailyTaskStatus
 from django.contrib.auth.models import User
@@ -9,6 +9,8 @@ from django.shortcuts import get_object_or_404
 from datetime import date, datetime
 from django.db.models import Q
 from .models import Task
+from django.contrib.auth import login
+from django.contrib.auth.models import Group
 
 
 @login_required
@@ -318,4 +320,47 @@ def task_deactivate(request, task_id):
         {
             'task': task,
         },
+    )
+
+
+def register(request):
+
+    if request.user.is_authenticated:
+
+        return redirect('daily_tasks')
+
+    if request.method == 'POST':
+
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+
+            user = form.save()
+
+            student_group, _ = Group.objects.get_or_create(
+                name='Student'
+            )
+
+            user.groups.add(student_group)
+
+            login(request, user)
+
+            return redirect('daily_tasks')
+
+    else:
+
+        form = RegisterForm()
+
+    return render(
+
+        request,
+
+        'registration/register.html',
+
+        {
+
+            'form': form,
+
+        },
+
     )
