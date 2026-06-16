@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block title %}
-افزودن کار
+{{ page_title|default:'افزودن کار' }}
 {% endblock %}
 
 {% block content %}
 
-<h1>
+<h1 class="mb-4">
 
-    {{ page_title|default:'افزودن کار جدید' }}
+    {{ page_title|default:'افزودن کار' }}
 
 </h1>
 
@@ -18,16 +18,15 @@
 
     {{ form.as_p }}
 
-    <button type="submit">
+    <button
+        class="btn btn-primary"
+        type="submit"
+    >
+
         ذخیره
+
     </button>
 
 </form>
-
-<p>
-    <a href="{% url 'task_list' %}">
-        بازگشت به لیست
-    </a>
-</p>
 
 {% endblock %}

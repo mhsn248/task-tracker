@@ -31,9 +31,12 @@
 
     {% csrf_token %}
 
-    <button type="submit">
+    <button
+        class="btn btn-warning"
+        type="submit"
+    >
 
-        بله، غیرفعال کن
+        غیرفعال کن
 
     </button>
 
@@ -41,7 +44,10 @@
 
 <p>
 
-    <a href="{% url 'task_list' %}">
+    <a
+        class="btn btn-secondary"
+        href="{% url 'task_list' %}"
+    >
 
         انصراف
 

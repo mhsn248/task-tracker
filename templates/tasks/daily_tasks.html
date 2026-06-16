@@ -30,50 +30,66 @@
 
 <hr>
 
-<form method="post">
+<div class="card">
 
-    {% csrf_token %}
+    <div class="card-body">
 
-    <ul>
+        <form method="post">
 
-        {% for task in tasks %}
+            {% csrf_token %}
 
-            <li>
+            {% for task in tasks %}
 
-                <label>
+                <div class="form-check mb-3">
 
                     <input
+                        class="form-check-input"
                         type="checkbox"
                         name="task_{{ task.id }}"
+                        id="task_{{ task.id }}"
                         {% if statuses|get_item:task.id %}
                             checked
                         {% endif %}
                     >
 
-                    {{ task.title }}
+                    <label
+                        class="form-check-label"
+                        for="task_{{ task.id }}"
+                    >
 
-                </label>
+                        {{ task.title }}
 
-            </li>
+                    </label>
 
-        {% empty %}
+                </div>
 
-            <li>
-                هنوز کاری تعریف نکرده‌اید.
-            </li>
+            {% empty %}
 
-        {% endfor %}
+                <div class="alert alert-info">
 
-    </ul>
+                    هنوز کاری تعریف نکرده‌اید.
 
-    {% if tasks %}
+                </div>
 
-        <button type="submit">
-            ذخیره
-        </button>
+            {% endfor %}
 
-    {% endif %}
+            {% if tasks %}
 
-</form>
+                <button
+                    class="btn btn-success"
+                    type="submit"
+                >
+
+                    ذخیره
+
+                </button>
+
+            {% endif %}
+
+        </form>
+
+    </div>
+
+</div>
 
 {% endblock %}

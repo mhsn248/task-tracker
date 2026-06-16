@@ -22,7 +22,10 @@
 
     {% csrf_token %}
 
-    <button type="submit">
+    <button
+        class="btn btn-danger"
+        type="submit"
+    >
 
         حذف
 
@@ -32,7 +35,10 @@
 
 <p>
 
-    <a href="{% url 'task_list' %}">
+    <a
+        class="btn btn-secondary"
+        href="{% url 'task_list' %}"
+    >
 
         انصراف
 
