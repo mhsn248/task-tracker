@@ -4,6 +4,9 @@ from django.shortcuts import render, redirect
 from .forms import TaskForm
 from datetime import date
 from .models import DailyTaskStatus
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
+from datetime import date, datetime
 
 from .models import Task
 
@@ -120,5 +123,93 @@ def daily_tasks(request):
     return render(
         request,
         'tasks/daily_tasks.html',
+        context,
+    )
+
+
+@login_required
+def teacher_students(request):
+
+    if not request.user.groups.filter(
+        name='Teacher'
+    ).exists():
+
+        return redirect('task_list')
+
+    students = User.objects.filter(
+        groups__name='Student'
+    ).order_by('username')
+
+    context = {
+        'students': students,
+    }
+
+    return render(
+        request,
+        'tasks/teacher_students.html',
+        context,
+    )
+
+
+@login_required
+def teacher_student_detail(
+    request,
+    student_id,
+):
+
+    if not request.user.groups.filter(
+        name='Teacher'
+    ).exists():
+
+        return redirect('task_list')
+
+    student = get_object_or_404(
+        User,
+        id=student_id,
+        groups__name='Student',
+    )
+
+    selected_date = request.GET.get('date')
+
+    if selected_date:
+
+        try:
+
+            selected_date = datetime.strptime(
+                selected_date,
+                '%Y-%m-%d',
+            ).date()
+
+        except ValueError:
+
+            selected_date = date.today()
+
+    else:
+
+        selected_date = date.today()
+
+    tasks = Task.objects.filter(
+        student=student,
+        is_active=True,
+    ).order_by('display_order')
+
+    statuses = {
+        status.task_id: status.is_completed
+        for status in DailyTaskStatus.objects.filter(
+            task__in=tasks,
+            date=selected_date,
+        )
+    }
+
+    context = {
+        'student': student,
+        'tasks': tasks,
+        'statuses': statuses,
+        'selected_date': selected_date,
+    }
+
+    return render(
+        request,
+        'tasks/teacher_student_detail.html',
         context,
     )

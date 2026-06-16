@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+شاگردها
+{% endblock %}
+
+{% block content %}
+
+<h1>لیست شاگردها</h1>
+
+<ul>
+
+    {% for student in students %}
+
+        <li>
+
+            <a href="{% url 'teacher_student_detail' student.id %}">
+
+                {{ student.username }}
+
+            </a>
+
+        </li>
+
+    {% empty %}
+
+        <li>
+
+            شاگردی وجود ندارد.
+
+        </li>
+
+    {% endfor %}
+
+</ul>
+
+{% endblock %}

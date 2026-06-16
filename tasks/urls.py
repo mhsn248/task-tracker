@@ -15,4 +15,16 @@ urlpatterns = [
         views.daily_tasks,
         name='daily_tasks',
     ),
+
+    path(
+        'teacher/students/',
+        views.teacher_students,
+        name='teacher_students',
+    ),
+
+    path(
+        'teacher/students/<int:student_id>/',
+        views.teacher_student_detail,
+        name='teacher_student_detail',
+    ),
 ]

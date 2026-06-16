@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% load task_extras %}
+
+{% block title %}
+{{ student.username }}
+{% endblock %}
+
+{% block content %}
+
+<h1>
+
+    وضعیت {{ student.username }}
+
+</h1>
+
+<form method="get">
+
+    <input
+        type="date"
+        name="date"
+        value="{{ selected_date|date:'Y-m-d' }}"
+    >
+
+    <button type="submit">
+
+        نمایش
+
+    </button>
+
+</form>
+
+<hr>
+
+<ul>
+
+    {% for task in tasks %}
+
+        <li>
+
+            {% if statuses|get_item:task.id %}
+
+                ✓
+
+            {% else %}
+
+                ✗
+
+            {% endif %}
+
+            {{ task.title }}
+
+        </li>
+
+    {% empty %}
+
+        <li>
+
+            این شاگرد کاری ندارد.
+
+        </li>
+
+    {% endfor %}
+
+</ul>
+
+<p>
+
+    <a href="{% url 'teacher_students' %}">
+
+        بازگشت به لیست شاگردها
+
+    </a>
+
+</p>
+
+{% endblock %}
