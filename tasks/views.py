@@ -200,7 +200,7 @@ def teacher_student_detail(
         selected_date = date.today()
 
     tasks = Task.objects.filter(
-        student=request.user,
+        student=student,
     ).filter(
         Q(started_at__lte=selected_date)
         &

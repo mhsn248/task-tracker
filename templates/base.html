@@ -330,36 +330,6 @@
 
                     <div class="app-nav">
 
-                        <a
-                            href="{% url 'daily_tasks' %}"
-                            class="nav-card"
-                        >
-
-                            <span class="nav-icon">
-
-                                📅
-
-                            </span>
-
-                            امروز
-
-                        </a>
-
-                        <a
-                            href="{% url 'task_list' %}"
-                            class="nav-card"
-                        >
-
-                            <span class="nav-icon">
-
-                                📋
-
-                            </span>
-
-                            کارها
-
-                        </a>
-
                         {% if user.groups.all.0.name == 'Teacher' %}
 
                             <a
@@ -374,6 +344,38 @@
                                 </span>
 
                                 شاگردها
+
+                            </a>
+
+                        {% else %}
+
+                            <a
+                                href="{% url 'daily_tasks' %}"
+                                class="nav-card"
+                            >
+
+                                <span class="nav-icon">
+
+                                    📅
+
+                                </span>
+
+                                امروز
+
+                            </a>
+
+                            <a
+                                href="{% url 'task_list' %}"
+                                class="nav-card"
+                            >
+
+                                <span class="nav-icon">
+
+                                    📋
+
+                                </span>
+
+                                کارها
 
                             </a>
 
