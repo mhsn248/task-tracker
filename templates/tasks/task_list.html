@@ -1,89 +1,373 @@
 {% extends 'base.html' %}
 
+{% load jalali %}
+
 {% block title %}
 کارهای من
 {% endblock %}
 
 {% block content %}
 
-<div class="d-flex justify-content-between mb-4">
+<div
+    class="
+        d-flex
+        justify-content-between
+        align-items-center
+        mb-4
+    "
+>
 
-    <h1>
+    <div>
 
-        کارهای من
+        <div class="page-subtitle">
 
-    </h1>
+            مدیریت کارها
+
+        </div>
+
+        <h2 class="page-title">
+
+            کارهای من
+
+        </h2>
+
+    </div>
 
     <a
-        class="btn btn-primary"
+        class="add-task-btn"
         href="{% url 'task_create' %}"
     >
 
-        افزودن کار
+        + افزودن کار
 
     </a>
 
 </div>
 
-<div class="list-group">
+{% for task in tasks %}
 
-    {% for task in tasks %}
+    <div class="task-card">
 
-        <div class="list-group-item">
+        <div
+            class="
+                d-flex
+                justify-content-between
+                align-items-start
+                gap-3
+                flex-wrap
+            "
+        >
 
-            <div class="d-flex justify-content-between align-items-center">
+            <div>
 
-                <strong>
+                <div class="task-title">
 
                     {{ task.title }}
 
-                </strong>
+                </div>
 
-                <div>
+                <div class="task-meta">
 
-                    <a
-                        class="btn btn-sm btn-outline-primary"
-                        href="{% url 'task_update' task.id %}"
-                    >
+                    فعال از
 
-                        ویرایش
-
-                    </a>
-
-                    <a
-                        class="btn btn-sm btn-outline-warning"
-                        href="{% url 'task_deactivate' task.id %}"
-                    >
-
-                        غیرفعال
-
-                    </a>
-
-                    <a
-                        class="btn btn-sm btn-outline-danger"
-                        href="{% url 'task_delete' task.id %}"
-                    >
-
-                        حذف
-
-                    </a>
+                    {{ task.started_at|to_jalali }}
 
                 </div>
 
             </div>
 
+            <div
+                class="
+                    d-flex
+                    gap-2
+                    flex-wrap
+                "
+            >
+
+                <a
+                    class="action-btn edit-btn"
+                    href="{% url 'task_update' task.id %}"
+                >
+
+                    ویرایش
+
+                </a>
+
+                <a
+                    class="action-btn deactivate-btn"
+                    href="{% url 'task_deactivate' task.id %}"
+                >
+
+                    غیرفعال
+
+                </a>
+
+                <a
+                    class="action-btn delete-btn"
+                    href="{% url 'task_delete' task.id %}"
+                >
+
+                    حذف
+
+                </a>
+
+            </div>
+
         </div>
 
-    {% empty %}
+    </div>
 
-        <div class="alert alert-info">
+{% empty %}
 
-            هنوز کاری تعریف نکرده‌اید.
+    <div class="empty-state">
+
+        <div class="empty-icon">
+
+            📝
 
         </div>
 
-    {% endfor %}
+        <div class="empty-title">
 
-</div>
+            هنوز کاری تعریف نکرده‌اید
+
+        </div>
+
+        <div class="empty-text">
+
+            اولین کار خود را اضافه کنید.
+
+        </div>
+
+        <div class="mt-4">
+
+            <a
+                class="add-task-btn"
+                href="{% url 'task_create' %}"
+            >
+
+                افزودن کار
+
+            </a>
+
+        </div>
+
+    </div>
+
+{% endfor %}
+
+<style>
+
+.page-subtitle {
+
+    color: #6b7280;
+
+    font-size: 0.9rem;
+
+    margin-bottom: 0.25rem;
+
+}
+
+.page-title {
+
+    margin: 0;
+
+    font-weight: 700;
+
+}
+
+.add-task-btn {
+
+    background: #198754;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 10px 16px;
+
+    border-radius: 14px;
+
+    font-weight: 500;
+
+    transition: all 0.2s ease;
+
+}
+
+.add-task-btn:hover {
+
+    background: #157347;
+
+    color: white;
+
+}
+
+.task-card {
+
+    background: white;
+
+    border: 1px solid #e9ecef;
+
+    border-radius: 18px;
+
+    padding: 18px 20px;
+
+    margin-bottom: 14px;
+
+    box-shadow:
+        0 2px 8px rgba(
+            0,
+            0,
+            0,
+            0.04
+        );
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+
+}
+
+.task-card:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 16px rgba(
+            0,
+            0,
+            0,
+            0.06
+        );
+
+}
+
+.task-title {
+
+    font-size: 1.05rem;
+
+    font-weight: 600;
+
+    margin-bottom: 0.35rem;
+
+}
+
+.task-meta {
+
+    color: #6b7280;
+
+    font-size: 0.85rem;
+
+}
+
+.action-btn {
+
+    text-decoration: none;
+
+    padding: 7px 12px;
+
+    border-radius: 12px;
+
+    font-size: 0.85rem;
+
+    font-weight: 500;
+
+    transition: all 0.2s ease;
+
+}
+
+.edit-btn {
+
+    background: #eef4ff;
+
+    color: #2563eb;
+
+}
+
+.edit-btn:hover {
+
+    background: #dbeafe;
+
+    color: #1d4ed8;
+
+}
+
+.deactivate-btn {
+
+    background: #fff7ed;
+
+    color: #ea580c;
+
+}
+
+.deactivate-btn:hover {
+
+    background: #ffedd5;
+
+    color: #c2410c;
+
+}
+
+.delete-btn {
+
+    background: #fef2f2;
+
+    color: #dc2626;
+
+}
+
+.delete-btn:hover {
+
+    background: #fee2e2;
+
+    color: #b91c1c;
+
+}
+
+.empty-state {
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 40px 24px;
+
+    text-align: center;
+
+    box-shadow:
+        0 2px 10px rgba(
+            0,
+            0,
+            0,
+            0.04
+        );
+
+}
+
+.empty-icon {
+
+    font-size: 3rem;
+
+    margin-bottom: 1rem;
+
+}
+
+.empty-title {
+
+    font-size: 1.1rem;
+
+    font-weight: 700;
+
+    margin-bottom: 0.5rem;
+
+}
+
+.empty-text {
+
+    color: #6b7280;
+
+}
+
+</style>
 
 {% endblock %}

@@ -9,48 +9,31 @@
 
 {% block content %}
 
-<h1>کارهای روزانه</h1>
+<div class="daily-page-header">
 
-<div
-    class="
-        d-flex
-        align-items-center
-        gap-2
-        mb-3
-    "
->
+    <div class="daily-header-left">
 
-    <span
-        class="
-            badge
-            rounded-pill
-            text-bg-light
-            border
-            px-3
-            py-2
-            fw-normal
-        "
-    >
+        <span class="daily-day-name">
 
-        📅
+            تاریخ
 
-        {{ selected_date|to_jalali }}
+        </span>
 
-    </span>
+        <input
+            type="text"
+            id="jalali-date"
+            class="daily-date-input"
+            readonly
+        >
+
+    </div>
 
 </div>
 
-<form method="get" id="date-form">
-
-    <label>
-        تاریخ:
-    </label>
-
-    <input
-        type="text"
-        id="jalali-date"
-        class="form-control"
-    >
+<form
+    method="get"
+    id="date-form"
+>
 
     <input
         type="hidden"
@@ -313,6 +296,72 @@ $(document).ready(function() {
 
     font-weight: 600;
 }
+
+.daily-page-header {
+
+    margin-bottom: 1.5rem;
+
+}
+
+.daily-header-left {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 0.75rem;
+
+}
+
+.daily-day-name {
+
+    color: #6b7280;
+
+    font-size: 0.95rem;
+
+    font-weight: 500;
+
+}
+
+.daily-date-input {
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 14px;
+
+    padding: 10px 14px;
+
+    background: white;
+
+    color: #134e4a;
+
+    font-weight: 600;
+
+    box-shadow:
+        0 2px 8px rgba(
+            0,
+            0,
+            0,
+            0.04
+        );
+
+    cursor: pointer;
+
+    width: 135px;
+
+    text-align: center;
+
+}
+
+.daily-date-input:focus {
+
+    outline: none;
+
+    border-color: #0f766e;
+
+}
+
+
 
 </style>
 

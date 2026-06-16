@@ -84,9 +84,13 @@ def daily_tasks(request):
     tasks = Task.objects.filter(
         student=request.user,
     ).filter(
-        Q(deactivated_at__isnull=True)
-        |
-        Q(deactivated_at__gt=selected_date)
+        Q(started_at__lte=selected_date)
+        &
+        (
+            Q(deactivated_at__isnull=True)
+            |
+            Q(deactivated_at__gt=selected_date)
+        )
     ).order_by(
         'display_order',
     )
@@ -194,11 +198,15 @@ def teacher_student_detail(
         selected_date = date.today()
 
     tasks = Task.objects.filter(
-        student=student,
+        student=request.user,
     ).filter(
-        Q(deactivated_at__isnull=True)
-        |
-        Q(deactivated_at__gt=selected_date)
+        Q(started_at__lte=selected_date)
+        &
+        (
+            Q(deactivated_at__isnull=True)
+            |
+            Q(deactivated_at__gt=selected_date)
+        )
     ).order_by(
         'display_order',
     )

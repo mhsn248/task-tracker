@@ -6,27 +6,243 @@
 
 {% block content %}
 
-<h1 class="mb-4">
+<div class="mb-4">
 
-    {{ page_title|default:'افزودن کار' }}
+    <div class="form-icon">
 
-</h1>
+        {% if page_title %}
 
-<form method="post">
+            ✏️
 
-    {% csrf_token %}
+        {% else %}
 
-    {{ form.as_p }}
+            ✨
 
-    <button
-        class="btn btn-primary"
-        type="submit"
-    >
+        {% endif %}
 
-        ذخیره
+    </div>
 
-    </button>
+    <h2 class="form-title">
 
-</form>
+        {{ page_title|default:'افزودن کار جدید' }}
+
+    </h2>
+
+    <div class="form-subtitle">
+
+        {% if page_title %}
+
+            اطلاعات این کار را ویرایش کنید.
+
+        {% else %}
+
+            کاری که می‌خواهید به برنامه روزانه اضافه شود را وارد کنید.
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<div class="form-card">
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+
+            <div class="alert alert-danger">
+
+                {{ form.non_field_errors }}
+
+            </div>
+
+        {% endif %}
+
+        <div class="mb-4">
+
+            <label
+                class="form-label fw-medium"
+                for="{{ form.title.id_for_label }}"
+            >
+
+                عنوان کار
+
+            </label>
+
+            {{ form.title }}
+
+            <div class="mb-4">
+
+                <label
+                    class="form-label fw-medium"
+                    for="{{ form.started_at.id_for_label }}"
+                >
+
+                    تاریخ شروع
+
+                </label>
+
+                {{ form.started_at }}
+
+                <div class="form-text">
+
+                    این کار از این تاریخ به بعد نمایش داده خواهد شد.
+
+                </div>
+
+            </div>
+
+            {% if form.title.errors %}
+
+                <div class="text-danger mt-2 small">
+
+                    {{ form.title.errors }}
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+        <button
+            class="
+                btn
+                btn-success
+                save-btn
+                w-100
+            "
+            type="submit"
+        >
+
+            {% if page_title %}
+
+                ذخیره تغییرات
+
+            {% else %}
+
+                افزودن کار
+
+            {% endif %}
+
+        </button>
+
+        <div class="text-center mt-3">
+
+            <a
+                class="cancel-link"
+                href="{% url 'task_list' %}"
+            >
+
+                انصراف
+
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+<style>
+
+.form-icon {
+
+    font-size: 2rem;
+
+    margin-bottom: 0.75rem;
+
+}
+
+.form-title {
+
+    font-size: 1.6rem;
+
+    font-weight: 700;
+
+    margin-bottom: 0.5rem;
+
+}
+
+.form-subtitle {
+
+    color: #6b7280;
+
+    font-size: 0.95rem;
+
+}
+
+.form-card {
+
+    background: white;
+
+    border-radius: 24px;
+
+    padding: 28px 24px;
+
+    box-shadow:
+        0 4px 20px rgba(
+            0,
+            0,
+            0,
+            0.05
+        );
+
+}
+
+.form-control {
+
+    border-radius: 16px;
+
+    padding: 14px 18px;
+
+    border: 1px solid #dee2e6;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+.form-control:focus {
+
+    border-color: #198754;
+
+    box-shadow:
+        0 0 0 0.2rem rgba(
+            25,
+            135,
+            84,
+            0.15
+        );
+
+}
+
+.save-btn {
+
+    border-radius: 16px;
+
+    padding: 14px;
+
+    font-weight: 600;
+
+}
+
+.cancel-link {
+
+    color: #6b7280;
+
+    text-decoration: none;
+
+}
+
+.cancel-link:hover {
+
+    color: #374151;
+
+}
+
+</style>
 
 {% endblock %}

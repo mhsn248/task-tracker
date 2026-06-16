@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -27,11 +29,14 @@ class Task(models.Model):
         auto_now_add=True,
     )
 
+    started_at = models.DateField()
+
     display_order = models.PositiveIntegerField(
         default=0,
     )
 
     class Meta:
+
         ordering = ['display_order', 'title']
 
         constraints = [
@@ -52,18 +57,24 @@ class Task(models.Model):
                 last_task = Task.objects.filter(
                     student=self.student,
                     is_active=True,
-                ).order_by('-display_order').first()
+                ).order_by(
+                    '-display_order',
+                ).first()
 
                 if last_task:
+
                     self.display_order = (
                         last_task.display_order + 1
                     )
+
                 else:
+
                     self.display_order = 1
 
         super().save(*args, **kwargs)
 
     def __str__(self):
+
         return (
             f'{self.student.username} - '
             f'{self.display_order}. {self.title}'
@@ -90,7 +101,10 @@ class DailyTaskStatus(models.Model):
 
     class Meta:
 
-        ordering = ['-date', 'task__display_order']
+        ordering = [
+            '-date',
+            'task__display_order',
+        ]
 
         constraints = [
             models.UniqueConstraint(
@@ -101,7 +115,11 @@ class DailyTaskStatus(models.Model):
 
     def __str__(self):
 
-        status = '✓' if self.is_completed else '✗'
+        status = (
+            '✓'
+            if self.is_completed
+            else '✗'
+        )
 
         return (
             f'{self.task.student.username} - '

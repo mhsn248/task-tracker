@@ -109,6 +109,81 @@
 
         }
 
+        .app-nav {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 0.5rem;
+
+        }
+
+        .nav-card {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 0.5rem;
+
+            padding: 0.55rem 0.9rem;
+
+            border-radius: 999px;
+
+            background: white;
+
+            border: 1px solid #e9ecef;
+
+            text-decoration: none;
+
+            color: #495057;
+
+            font-size: 0.9rem;
+
+            font-weight: 500;
+
+            box-shadow:
+                0 1px 4px rgba(
+                    0,
+                    0,
+                    0,
+                    0.04
+                );
+
+            transition:
+                all 0.15s ease;
+
+        }
+
+        .nav-card:hover {
+
+            transform: translateY(-1px);
+
+        }
+
+        .nav-icon {
+
+            font-size: 1rem;
+
+            margin: 0;
+
+        }
+
+        .logout-link {
+
+            border: none;
+
+            background: none;
+
+            color: #dc3545;
+
+            font-weight: 500;
+
+            padding: 0;
+
+        }
+
     </style>
 
 </head>
@@ -155,81 +230,89 @@
 
                 {% if user.is_authenticated %}
 
-                    <div
-                        class="
-                            d-flex
-                            flex-wrap
-                            gap-2
-                        "
-                    >
+                    <div class="app-nav">
 
                         <a
-                            class="
-                                btn
-                                btn-outline-primary
-                                btn-sm
-                            "
                             href="{% url 'daily_tasks' %}"
+                            class="nav-card"
                         >
 
-                            امروز
+                            <div class="nav-icon">
+
+                                📅
+
+                            </div>
+
+                            <div>
+
+                                امروز
+
+                            </div>
 
                         </a>
 
                         <a
-                            class="
-                                btn
-                                btn-outline-secondary
-                                btn-sm
-                            "
                             href="{% url 'task_list' %}"
+                            class="nav-card"
                         >
 
-                            کارها
+                            <div class="nav-icon">
+
+                                📋
+
+                            </div>
+
+                            <div>
+
+                                کارها
+
+                            </div>
 
                         </a>
 
                         {% if user.groups.all.0.name == 'Teacher' %}
 
                             <a
-                                class="
-                                    btn
-                                    btn-outline-info
-                                    btn-sm
-                                "
                                 href="{% url 'teacher_students' %}"
+                                class="nav-card"
                             >
 
-                                شاگردها
+                                <div class="nav-icon">
+
+                                    👨‍🏫
+
+                                </div>
+
+                                <div>
+
+                                    شاگردها
+
+                                </div>
 
                             </a>
 
                         {% endif %}
 
-                        <form
-                            method="post"
-                            action="{% url 'logout' %}"
-                            class="d-inline"
+                    </div>
+
+                    <form
+                        method="post"
+                        action="{% url 'logout' %}"
+                        class="mt-3"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            class="logout-link"
+                            type="submit"
                         >
 
-                            {% csrf_token %}
+                            خروج ↩
 
-                            <button
-                                class="
-                                    btn
-                                    btn-outline-danger
-                                    btn-sm
-                                "
-                                type="submit"
-                            >
+                        </button>
 
-                                خروج
-
-                            </button>
-
-                        </form>
-
-                    </div>
+                    </form>
 
                 {% endif %}
 
