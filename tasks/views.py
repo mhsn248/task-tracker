@@ -1,3 +1,4 @@
+from datetime import date, datetime
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import TaskForm
@@ -57,9 +58,25 @@ def task_create(request):
 
 
 @login_required
-def today_tasks(request):
+def daily_tasks(request):
 
-    today = date.today()
+    selected_date = request.GET.get('date')
+
+    if selected_date:
+
+        try:
+            selected_date = datetime.strptime(
+                selected_date,
+                '%Y-%m-%d'
+            ).date()
+
+        except ValueError:
+
+            selected_date = date.today()
+
+    else:
+
+        selected_date = date.today()
 
     tasks = Task.objects.filter(
         student=request.user,
@@ -76,30 +93,32 @@ def today_tasks(request):
 
             DailyTaskStatus.objects.update_or_create(
                 task=task,
-                date=today,
+                date=selected_date,
                 defaults={
                     'is_completed': is_completed,
                 }
             )
 
-        return redirect('today_tasks')
+        return redirect(
+            f'/tasks/daily/?date={selected_date}'
+        )
 
     statuses = {
         status.task_id: status.is_completed
         for status in DailyTaskStatus.objects.filter(
             task__in=tasks,
-            date=today,
+            date=selected_date,
         )
     }
 
     context = {
         'tasks': tasks,
         'statuses': statuses,
-        'today': today,
+        'selected_date': selected_date,
     }
 
     return render(
         request,
-        'tasks/today_tasks.html',
+        'tasks/daily_tasks.html',
         context,
     )

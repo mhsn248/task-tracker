@@ -11,8 +11,8 @@ urlpatterns = [
     ),
 
     path(
-        'today/',
-        views.today_tasks,
-        name='today_tasks',
+        'daily/',
+        views.daily_tasks,
+        name='daily_tasks',
     ),
 ]

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% load task_extras %}
+
+{% block title %}
+کارهای روزانه
+{% endblock %}
+
+{% block content %}
+
+<h1>کارهای روزانه</h1>
+
+<form method="get">
+
+    <label>
+        تاریخ:
+    </label>
+
+    <input
+        type="date"
+        name="date"
+        value="{{ selected_date|date:'Y-m-d' }}"
+    >
+
+    <button type="submit">
+        نمایش
+    </button>
+
+</form>
+
+<hr>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    <ul>
+
+        {% for task in tasks %}
+
+            <li>
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        name="task_{{ task.id }}"
+                        {% if statuses|get_item:task.id %}
+                            checked
+                        {% endif %}
+                    >
+
+                    {{ task.title }}
+
+                </label>
+
+            </li>
+
+        {% empty %}
+
+            <li>
+                هنوز کاری تعریف نکرده‌اید.
+            </li>
+
+        {% endfor %}
+
+    </ul>
+
+    {% if tasks %}
+
+        <button type="submit">
+            ذخیره
+        </button>
+
+    {% endif %}
+
+</form>
+
+{% endblock %}
