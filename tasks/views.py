@@ -7,7 +7,7 @@ from .models import DailyTaskStatus
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from datetime import date, datetime
-
+from django.db.models import Q
 from .models import Task
 
 
@@ -16,7 +16,7 @@ def task_list(request):
 
     tasks = Task.objects.filter(
         student=request.user,
-        is_active=True,
+        deactivated_at__isnull=True,
     ).order_by('display_order')
 
     context = {
@@ -83,8 +83,13 @@ def daily_tasks(request):
 
     tasks = Task.objects.filter(
         student=request.user,
-        is_active=True,
-    ).order_by('display_order')
+    ).filter(
+        Q(deactivated_at__isnull=True)
+        |
+        Q(deactivated_at__gt=selected_date)
+    ).order_by(
+        'display_order',
+    )
 
     if request.method == 'POST':
 
@@ -190,8 +195,13 @@ def teacher_student_detail(
 
     tasks = Task.objects.filter(
         student=student,
-        is_active=True,
-    ).order_by('display_order')
+    ).filter(
+        Q(deactivated_at__isnull=True)
+        |
+        Q(deactivated_at__gt=selected_date)
+    ).order_by(
+        'display_order',
+    )
 
     statuses = {
         status.task_id: status.is_completed
@@ -212,4 +222,92 @@ def teacher_student_detail(
         request,
         'tasks/teacher_student_detail.html',
         context,
+    )
+
+
+@login_required
+def task_update(request, task_id):
+
+    task = get_object_or_404(
+        Task,
+        id=task_id,
+        student=request.user,
+    )
+
+    if request.method == 'POST':
+
+        form = TaskForm(
+            request.POST,
+            instance=task,
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect('task_list')
+
+    else:
+
+        form = TaskForm(
+            instance=task,
+        )
+
+    return render(
+        request,
+        'tasks/task_form.html',
+        {
+            'form': form,
+            'page_title': 'ویرایش کار',
+        },
+    )
+
+
+@login_required
+def task_delete(request, task_id):
+
+    task = get_object_or_404(
+        Task,
+        id=task_id,
+        student=request.user,
+    )
+
+    if request.method == 'POST':
+
+        task.delete()
+
+        return redirect('task_list')
+
+    return render(
+        request,
+        'tasks/task_confirm_delete.html',
+        {
+            'task': task,
+        },
+    )
+
+
+@login_required
+def task_deactivate(request, task_id):
+
+    task = get_object_or_404(
+        Task,
+        id=task_id,
+        student=request.user,
+    )
+
+    if request.method == 'POST':
+
+        task.deactivated_at = date.today()
+
+        task.save()
+
+        return redirect('task_list')
+
+    return render(
+        request,
+        'tasks/task_confirm_deactivate.html',
+        {
+            'task': task,
+        },
     )

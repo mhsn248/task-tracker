@@ -13,7 +13,21 @@
     {% for task in tasks %}
 
         <li>
+
             {{ task.title }}
+
+            <a href="{% url 'task_update' task.id %}">
+                ویرایش
+            </a>
+
+            <a href="{% url 'task_deactivate' task.id %}">
+                غیرفعال کردن
+            </a>
+
+            <a href="{% url 'task_delete' task.id %}">
+                حذف
+            </a>
+
         </li>
 
     {% empty %}

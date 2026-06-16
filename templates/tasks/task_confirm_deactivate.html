@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+غیرفعال کردن کار
+{% endblock %}
+
+{% block content %}
+
+<h1>
+
+    غیرفعال کردن کار
+
+</h1>
+
+<p>
+
+    با غیرفعال کردن
+
+    <strong>
+
+        {{ task.title }}
+
+    </strong>
+
+    این کار از امروز به بعد در لیست روزانه نمایش داده نخواهد شد،
+    اما در روزهای گذشته همچنان قابل مشاهده خواهد بود.
+
+</p>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    <button type="submit">
+
+        بله، غیرفعال کن
+
+    </button>
+
+</form>
+
+<p>
+
+    <a href="{% url 'task_list' %}">
+
+        انصراف
+
+    </a>
+
+</p>
+
+{% endblock %}

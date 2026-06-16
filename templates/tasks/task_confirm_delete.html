@@ -1,33 +1,43 @@
 {% extends 'base.html' %}
 
 {% block title %}
-افزودن کار
+حذف کار
 {% endblock %}
 
 {% block content %}
 
-<h1>
+<h1>حذف کار</h1>
 
-    {{ page_title|default:'افزودن کار جدید' }}
+<p>
 
-</h1>
+آیا از حذف
+
+<strong>{{ task.title }}</strong>
+
+مطمئن هستید؟
+
+</p>
 
 <form method="post">
 
     {% csrf_token %}
 
-    {{ form.as_p }}
-
     <button type="submit">
-        ذخیره
+
+        حذف
+
     </button>
 
 </form>
 
 <p>
+
     <a href="{% url 'task_list' %}">
-        بازگشت به لیست
+
+        انصراف
+
     </a>
+
 </p>
 
 {% endblock %}
