@@ -107,11 +107,15 @@
         {% if tasks %}
 
             <button
-                class="btn btn-success"
+                class="
+                    btn
+                    save-daily-btn
+                    w-100
+                "
                 type="submit"
             >
 
-                ذخیره
+                ✓ ذخیره تغییرات
 
             </button>
 
@@ -361,7 +365,70 @@ $(document).ready(function() {
 
 }
 
+.save-daily-btn {
 
+    background: #198754;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 18px;
+
+    padding: 14px;
+
+    font-weight: 600;
+
+    font-size: 1rem;
+
+    box-shadow:
+        0 4px 12px rgba(
+            25,
+            135,
+            84,
+            0.25
+        );
+
+    transition:
+        all 0.2s ease;
+
+}
+
+.save-daily-btn:hover {
+
+    background: #157347;
+
+    color: white;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 16px rgba(
+            25,
+            135,
+            84,
+            0.3
+        );
+
+}
+
+.save-daily-btn:active {
+
+    transform: scale(0.98);
+
+}
+
+.save-daily-btn:focus {
+
+    box-shadow:
+        0 0 0 0.2rem rgba(
+            25,
+            135,
+            84,
+            0.2
+        );
+
+}
 
 </style>
 

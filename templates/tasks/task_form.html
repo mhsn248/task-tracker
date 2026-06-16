@@ -8,142 +8,161 @@
 
 <div class="mb-4">
 
-    <div class="form-icon">
+```
+<div class="form-icon">
 
-        {% if page_title %}
+    {% if page_title %}
 
-            ✏️
+        ✏️
 
-        {% else %}
+    {% else %}
 
-            ✨
+        ✨
 
-        {% endif %}
+    {% endif %}
 
-    </div>
+</div>
 
-    <h2 class="form-title">
+<h2 class="form-title">
 
-        {{ page_title|default:'افزودن کار جدید' }}
+    {{ page_title|default:'افزودن کار جدید' }}
 
-    </h2>
+</h2>
 
-    <div class="form-subtitle">
+<div class="form-subtitle">
 
-        {% if page_title %}
+    {% if page_title %}
 
-            اطلاعات این کار را ویرایش کنید.
+        اطلاعات این کار را ویرایش کنید.
 
-        {% else %}
+    {% else %}
 
-            کاری که می‌خواهید به برنامه روزانه اضافه شود را وارد کنید.
+        کاری که می‌خواهید به برنامه روزانه اضافه شود را وارد کنید.
 
-        {% endif %}
+    {% endif %}
 
-    </div>
+</div>
+```
 
 </div>
 
 <div class="form-card">
 
-    <form method="post">
+```
+<form method="post">
 
-        {% csrf_token %}
+    {% csrf_token %}
 
-        {% if form.non_field_errors %}
+    {% if form.non_field_errors %}
 
-            <div class="alert alert-danger">
+        <div class="alert alert-danger">
 
-                {{ form.non_field_errors }}
+            {{ form.non_field_errors }}
+
+        </div>
+
+    {% endif %}
+
+    <div class="mb-4">
+
+        <label
+            class="form-label fw-medium"
+            for="{{ form.title.id_for_label }}"
+        >
+
+            عنوان کار
+
+        </label>
+
+        {{ form.title }}
+
+        {% if form.title.errors %}
+
+            <div class="text-danger mt-2 small">
+
+                {{ form.title.errors }}
 
             </div>
 
         {% endif %}
 
-        <div class="mb-4">
+    </div>
 
-            <label
-                class="form-label fw-medium"
-                for="{{ form.title.id_for_label }}"
-            >
+    <div class="mb-4">
 
-                عنوان کار
+        <label class="form-label fw-medium">
 
-            </label>
+            تاریخ شروع
 
-            {{ form.title }}
+        </label>
 
-            <div class="mb-4">
-
-                <label
-                    class="form-label fw-medium"
-                    for="{{ form.started_at.id_for_label }}"
-                >
-
-                    تاریخ شروع
-
-                </label>
-
-                {{ form.started_at }}
-
-                <div class="form-text">
-
-                    این کار از این تاریخ به بعد نمایش داده خواهد شد.
-
-                </div>
-
-            </div>
-
-            {% if form.title.errors %}
-
-                <div class="text-danger mt-2 small">
-
-                    {{ form.title.errors }}
-
-                </div>
-
-            {% endif %}
-
-        </div>
-
-        <button
-            class="
-                btn
-                btn-success
-                save-btn
-                w-100
-            "
-            type="submit"
+        <input
+            type="text"
+            id="jalali-start-date"
+            class="form-control"
+            readonly
         >
 
-            {% if page_title %}
+        {{ form.started_at }}
 
-                ذخیره تغییرات
+        <div class="form-text">
 
-            {% else %}
-
-                افزودن کار
-
-            {% endif %}
-
-        </button>
-
-        <div class="text-center mt-3">
-
-            <a
-                class="cancel-link"
-                href="{% url 'task_list' %}"
-            >
-
-                انصراف
-
-            </a>
+            این کار از این تاریخ به بعد نمایش داده خواهد شد.
 
         </div>
 
-    </form>
+    </div>
+
+    <button
+        class="
+            btn
+            btn-success
+            save-btn
+            w-100
+        "
+        type="submit"
+    >
+
+        {% if page_title %}
+
+            ذخیره تغییرات
+
+        {% else %}
+
+            افزودن کار
+
+        {% endif %}
+
+    </button>
+
+    <div class="text-center mt-3">
+
+        <a
+            class="cancel-link"
+            href="{% url 'task_list' %}"
+        >
+
+            انصراف
+
+        </a>
+
+    </div>
+
+</form>
+```
 
 </div>
+
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css"
+>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
 
 <style>
 
@@ -219,6 +238,12 @@
 
 }
 
+#jalali-start-date {
+
+    cursor: pointer;
+
+}
+
 .save-btn {
 
     border-radius: 16px;
@@ -244,5 +269,61 @@
 }
 
 </style>
+
+<script>
+
+$(document).ready(function() {
+
+    const hiddenInput =
+        document.getElementById(
+            'id_started_at'
+        );
+
+    $("#jalali-start-date").pDatepicker({
+
+        format: 'YYYY/MM/DD',
+
+        observer: true,
+
+        autoClose: true,
+
+        initialValue: false,
+
+        onSelect: function(unix) {
+
+            const pd =
+                new persianDate(unix);
+
+            const gregorian =
+                pd.toCalendar(
+                    'gregorian'
+                );
+
+            const year =
+                gregorian.year();
+
+            const month = String(
+                gregorian.month()
+            ).padStart(
+                2,
+                '0'
+            );
+
+            const day = String(
+                gregorian.date()
+            ).padStart(
+                2,
+                '0'
+            );
+
+            hiddenInput.value =
+                `${year}-${month}-${day}`;
+
+        }
+
+    });
+
+});
+</script>
 
 {% endblock %}

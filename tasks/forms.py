@@ -32,16 +32,6 @@ class TaskForm(forms.ModelForm):
 
             ),
 
-            'started_at': forms.DateInput(
-
-                attrs={
-
-                    'class': 'form-control',
-
-                    'type': 'date',
-
-                }
-
-            ),
+            'started_at': forms.HiddenInput(),
 
         }
