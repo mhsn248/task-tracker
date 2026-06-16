@@ -24,6 +24,18 @@
         rel="stylesheet"
     >
 
+    {% load static %}
+
+    <link
+        rel="manifest"
+        href="{% static 'manifest.json' %}"
+    >
+
+    <meta
+        name="theme-color"
+        content="#212529"
+    >
+
 </head>
 
 <body>
@@ -114,6 +126,18 @@
         {% endblock %}
 
     </div>
+
+    <script>
+
+    if ('serviceWorker' in navigator) {
+
+        navigator.serviceWorker.register(
+            "{% static 'sw.js' %}"
+        );
+
+    }
+
+    </script>
 
 </body>
 
